@@ -16,6 +16,8 @@ import {intlConfigPropTypes, intlFormatPropTypes, intlShape} from '../types';
 import * as format from '../format';
 import {hasLocaleData} from '../locale-data-registry';
 
+import {set as SetIntl} from '../get-intl';
+
 const intlConfigPropNames = Object.keys(intlConfigPropTypes);
 const intlFormatPropNames = Object.keys(intlFormatPropTypes);
 
@@ -153,14 +155,16 @@ export default class IntlProvider extends Component {
 
     const {now, ...formatters} = this.state;
 
-    return {
+    const context = {
       intl: {
         ...config,
         ...boundFormatFns,
         formatters,
         now,
       },
-    };
+    }
+    SetIntl(context);
+    return context;
   }
 
   shouldComponentUpdate(...next) {
